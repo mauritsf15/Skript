@@ -1,0 +1,68 @@
+options:
+    default: &f[Member] %player% > &7%message% #default chat format
+    owner: &c[Owner] &f%player% > &f%message% #owner chat format
+    #
+    # You can create your own chat formats here. The "customrank" format is so you can create your own chat formats.
+    # Find the color codes here: https://plancke.io/tools/color/
+    # It is possible to replicate this process as many times as you want. You can create the permission yourself; check below.
+    #
+    #customrank: §b[CustomRank] §f%player% > §f%message%
+    
+#
+# This is the thing where the chat is being formatted
+# You can create unlimited more, but be sure to add the format above.
+# If you need help, contact me on Discord: succ#0279
+#
+
+on chat:
+    cancel event
+    if player has permission "chatmanager.owner": # checks permission (you can change the permission)
+        broadcast "{@owner}" # sends the message (configurable above) to everyone
+    #else if player has permission "chatmanager.customrank":
+        #broadcast "{@customrank}"
+    else: # this is the default chat format.
+        broadcast "{@default}"
+        
+# Commands. Not recommended to change anything.
+
+command /chatmanager <text>:
+    permission: chatmanager.main
+    permission message: @perm
+    description: Main Chatmanager command
+    usage: Do /chatmanager help for a list of commands. \n This is a line test.
+    trigger:
+        if argument is "info":
+            send ""
+            send "&bChatmanager"
+            send ""
+            send "&3Version: 1.0"
+            send "&3For a list of commands, do /chatmanager help"
+            send "&aCheck &fhttps://github.com/mauritsf15/skript/chatmanager/readme.md &r&afor new versions!"
+        else if argument is "help":
+            if player has permission "chatmanager.help":
+                send ""
+                send "&5ChatManager Help"
+                send ""
+                send "&5/chatmanager info &f- returns skript information"
+                send "&5/chatmanager help &f- returns this message"
+                send "&5/chatmanager setgroup &f- set the prefix of a player"
+                send "&5/chatmanager disable &f- set prefix for a group"
+                send "&5/chatmanager reload &f- reload configuration"
+                send ""
+        else if argument is "setgroup":
+            if player has permission "chatmanager.setgroup":
+                send "&8You can set the group of a player in your permission manager. Learn more here: https://github.com/mauritsf15/skript/chatmanager/readme.md"
+            else:
+                send "{@perm}"
+        else if argument is "disable":
+            if player has permission "chatmanager.disable":
+                make player execute command "/sk disable chat.sk"
+            else:
+                send "{@perm}"
+        else if argument is "reload":
+            if player has permission "chatmanager.reload":
+                make player execute command "/sk reload chat.sk"
+            else:
+                send "{@perm}"
+        else if argument is not "info" or "help" or "setgroup" or "disable" or "reload":
+            make player execute command "/chatmanager help"
