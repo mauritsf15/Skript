@@ -1,4 +1,5 @@
 options:
+    perm: &cError: &bYou do not have the required permission to execute this command. # permission message
     default: &f[Member] %player% > &7%message% #default chat format
     owner: &c[Owner] &f%player% > &f%message% #owner chat format
     #
