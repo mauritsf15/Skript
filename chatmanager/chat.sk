@@ -66,3 +66,12 @@ command /chatmanager <text>:
                 send "{@perm}"
         else if argument is not "info" or "help" or "setgroup" or "disable" or "reload":
             make player execute command "/chatmanager help"
+
+# Simple welcome messages
+
+on first join:
+    broadcast "&d%player% has joined the server for the first time! [%{totalplayers}%]" # First join message
+    send title "&dWelcome to the server, &a%player%!" with subtitle "Get started with &a/start!" # Shows a title on the first join
+
+on join:
+    broadcast "&a%player% has joined the server"
