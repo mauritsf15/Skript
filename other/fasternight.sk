@@ -1,0 +1,10 @@
+at 18:00:
+    loop 300 times: 
+        add 40 ticks to time
+        wait 1 ticks
+
+# It is possible to edit the numbers, but make sure the numbers in line 2 and 3 equal 12.000, that's the duration of the night.
+# The night lasts 300 ticks now which is 15 seconds.
+# So instead of the night lasting 10 minutes it's now just 15 seconds!
+# Created by: inqredible.
+# Discord: succ#0279
