@@ -31,6 +31,11 @@ on chat:
     else if message contains "fuck, nigger, nigga":
         cancel event
         send "&cIt looks like you tried to use blacklisted words in your message. Please refrain from doing so."
+    else if {%player%.ac} is "true":
+        cancel event
+        loop all players:
+            if loop-player has permission "chatmanager.adminchat":
+                send "&c&l[AdminChat] &b&l%player% > %message%" to loop-player
     else:
         cancel event
         if player has permission "chatmanager.owner": # checks permission (you can change the permission)
@@ -57,16 +62,18 @@ command /chatmanager <text=info>:
             send "&3For a list of commands, do /chatmanager help"
             send "&aCheck &f<link:https://github.com/mauritsf15/Skript/tree/master/chatmanager>my github<reset> &r&afor new versions!"
         else if argument is "help":
-            if player has permission "chatmanager.help":
+            if 1 is 1:
                 send ""
                 send "&dChatManager Help"
                 send ""
                 send "&d/chatmanager info &f- returns skript information"
                 send "&d/chatmanager help &f- returns this message"
-                send "&d/chatmanager setgroup &f- set the prefix of a player"
-                send "&d/chatmanager disable &f- set prefix for a group"
                 send "&d/chatmanager reload &f- reload configuration"
-                send ""
+                send "&d/clearchat &f- clears the chat"
+                send "&d/mute <player> <reason> &f- mute a player"
+                send "&d/unmute <player> &f- unmute a player"
+                send "&d/adminchat [text] &f- admin chat"
+                send "&d/mutechat &f- mutes and unmutes the chat"
         else if argument is "setgroup":
             if player has permission "chatmanager.setgroup":
                 send "&8You can set the group of a player in your permission manager. Learn more here: <link:https://github.com/mauritsf15/Skript/tree/master/chatmanager>my github<reset>"
@@ -79,7 +86,7 @@ command /chatmanager <text=info>:
                 send "{@perm}"
         else if argument is "reload":
             if player has permission "chatmanager.reload":
-                make player execute command "/sk reload chat.sk"
+                make player execute command "/sk reload scripts"
             else:
                 send "{@perm}"
         else if argument is not "info" or "help" or "setgroup" or "disable" or "reload":
@@ -90,11 +97,9 @@ command /chatmanager <text=info>:
 on first join:
     broadcast "&d%player% has joined the server for the first time! [%{totalplayers}%]" # First join message
     send title "&dWelcome to the server, &a%player%!" with subtitle "Get started with &a/start!" # Shows a title on the first join
-    set {%player%.ac} to "false"
 
 on join:
     broadcast "&a%player% has joined the server"
-    set {%player%.ac} to "false"
 
 #
 # ---------=========AUTOBROADCAST=========---------
@@ -102,16 +107,16 @@ on join:
 
 every 3 minutes:
     if {bc} is 1:
-        broadcast "&b&l[MyServer]&r &aThis is a hint!"
+        broadcast "&b[ChatManager]&r &aThis is a hint!"
         set {bc} to 2
     if {bc} is 2:
-        broadcast "&b&l[MyServer]&r &aThis is a important message."
+        broadcast "&b[ChatManager]&r &aThis is a important message."
         set {bc} to 3
     if {bc} is 3:
-        broadcast "&b&l[MyServer]&r &aThis is another hint!"
+        broadcast "&b[ChatManager]&r &aThis is another hint!"
         set {bc} to 0
     else:
-        broadcast "&b&l[MyServer]&r &aBuy from our shop! Link: <link:linkhere>Text here<reset>"
+        broadcast "&b&l[ChatManager]&r &aBuy from our shop! Link: <link:linkhere>Text here<reset>"
         set {bc} to 1
 
 #
@@ -174,16 +179,16 @@ command /ac [<text>]:
     description: Admin Chat
     trigger:
         if argument 1 is not set:
-            if {%player%.ac} is "false":
-                set {%player%.ac} to "true"
-                send "&dToggled Admin Chat &cON"
             if {%player%.ac} is "true":
                 set {%player%.ac} to "false"
                 send "&dToggled Admin Chat &cOFF"
+            else:
+                set {%player%.ac} to "true"
+                send "&dToggled Admin Chat &cON"
         else:
             loop all players:
                 if loop-player has permission "chatmanager.adminchat":
-                    send "&c[AdminChat] &r%player% > %argument 1%" to loop-player
+                    send "&c&l[AdminChat] &b&l%player% > %argument 1%" to loop-player
                 else:
                     stop
 
