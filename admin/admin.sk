@@ -4,8 +4,7 @@
 # Includes new commands, and shorter commands like /gmc instead of /gamemode creative
 # Created by inqredible
 # Plugins/addons needed: none
-# List of commands:
-# List of 
+# List of commands: https://github.com/mauritsf15/Skript/blob/master/admin/commands.md
 #
 
 options:
@@ -192,3 +191,32 @@ command /unban <player> [<text>]:
 on join:
     if {%player%.banned} is true:
         kick arg 1 due to "You've been banned from this server!"
+
+# HELP
+command /admin <text=info>:
+    permission: admin.main
+    permission message: @perm
+    description: Main admin.sk command
+    usage: &cIncorrect usage. &f/admin <subcommand>
+    trigger:
+        if arg 1 is "info":
+            send "&d&lAdmin.sk &f| &5Information"
+            send ""
+            send "&5Current version: 1.0"
+            send "&5Newest version: &d<link:https://github.com/mauritsf15/Skript/tree/master/admin>Click here!<reset>"
+        if arg 1 is "help" or "help 1":
+            send "&d&lAdmin.sk &f| &5Commands (1/2)"
+            send "&5/admin info"
+            send "&5/admin help"
+            send "&5/gmc [player]"
+            send "&5/gms [player]"
+            send "&5/gma [player]"
+            send "&5/gmsp [player]"
+            send "&5/kick <player> [reason]"
+        if arg 2 is "help 2":
+            send "&d&lAdmin.sk &f| &5Commands (2/2)"
+            send "&5/mute <player> [reason]"
+            send "&5/unmute <player> [reason]"
+            send "&5/ban <player> [reason]"
+            send "&5/unban <player> [reason]"
+            send "&d<link:https://github.com/mauritsf15/Skript/blob/master/admin/commands.md>Click here<reset> &5for a list of commands including permissions and description!"
