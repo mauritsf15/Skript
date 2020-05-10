@@ -1,6 +1,4 @@
-# Skript
-
-## Skripts from inqredible.
+# Skripts made by inqredible
 
 #### Some skripts may be in development, go to the SpigotMC link in the readme.md link of every folder for a working skript!
 
