@@ -1,0 +1,194 @@
+#
+# ADMIN COMMANDS
+# Commands you kind of need as an admin.
+# Includes new commands, and shorter commands like /gmc instead of /gamemode creative
+# Created by inqredible
+# Plugins/addons needed: none
+# List of commands:
+# List of 
+#
+
+options:
+    perm: &cInsufficient permissions. # message if a player doesn't have permission
+    broadcast: true # If set to true, there will be a broadcast when a player is punished.
+
+# GAMEMODES
+command /gmc [<player>]:
+    permission: admin.gmc
+    permission message: @perm
+    description: Sets the gamemode to creative
+    usage: &cIncorrect usage. &f/gmc [player]
+    aliases: /creative, /c
+    trigger:
+        if arg 1 is not set:
+            set player's gamemode to creative
+            send "&5Gamemode set to &dcreative&5." to player
+        else if arg 1 is set:
+            set arg 1's gamemode to creative
+            send "&d%arg 1%&5's gamemode set to &dcreative&5." to player
+            send "&5Gamemode set to &dcreative&5 by &d%player%." to arg 1
+
+command /gms [<player>]:
+    permission: admin.gms
+    permission message: @perm
+    description: Sets the gamemode to survival
+    usage: &cIncorrect usage. &f/gms [player]
+    aliases: /survival
+    trigger:
+        if arg 1 is not set:
+            set player's gamemode to survival
+            send "&5Gamemode set to &dsurvival&5." to player
+        else if arg 1 is set:
+            set arg 1's gamemode to survival
+            send "&d%arg 1%&5's gamemode set to &dsurvival&5." to player
+            send "&5Gamemode set to &dsurvival&5 by &d%player%." to arg 1
+
+command /gma [<player>]:
+    permission: admin.gma
+    permission message: @perm
+    description: Sets the gamemode to adventure
+    usage: &cIncorrect usage. &f/gma[player]
+    aliases: /adventure
+    trigger:
+        if arg 1 is not set:
+            set player's gamemode to adventure
+            send "&5Gamemode set to &dadventure&5." to player
+        else if arg 1 is set:
+            set arg 1's gamemode to adventure
+            send "&d%arg 1%&5's gamemode set to &dadventure&5." to player
+            send "&5Gamemode set to &dadventure&5 by &d%player%." to arg 1
+
+command /gmsp [<player>]:
+    permission: admin.gmsp
+    permission message: @perm
+    description: Sets the gamemode to spectator
+    usage: &cIncorrect usage. &f/gmsp[player]
+    aliases: /spectator, /sp
+    trigger:
+        if arg 1 is not set:
+            set player's gamemode to spectator
+            send "&5Gamemode set to &dspectator mode&5." to player
+        else if arg 1 is set:
+            set arg 1's gamemode to spectator
+            send "&d%arg 1%&5's gamemode set to &dspectator mode&5." to player
+            send "&5Gamemode set to &dspectator mode&5 by &d%player%." to arg 1
+
+# PUNISHMENTS
+command /kick <player> [<text>]:
+    permission: admin.kick
+    permission message: @perm
+    description: Kicks the player
+    usage: &cIncorrect usage. &f/kick <player> [text]
+    trigger:
+        if arg 1 has permission "admin.bypass":
+            send "&5You can't punish &d%arg 1%&5!"
+        else if arg 1 doesn't have permission "admin.bypass":
+            if arg 2 is set:
+                kick arg 1 due to %arg 2%
+                send "&5Succesfully kicked &d%arg 1% &5due to &d%arg 2%&5."
+                if @broadcast is true:
+                    broadcast "&d%arg 1% &5has been kicked by &d%player% &5due to &d%arg 2%&5!"
+            else if arg 2 is not set:
+                kick arg 1
+                send "&5Succesfully kicked &d%arg 1%&5."
+                if broadcast is true:
+                    broadcast "&d%arg 1% &5has been kicked by &d%player%&5!"
+
+command /mute <player> [<text>]:
+    permission: admin.mute
+    permission message: @perm
+    description: Mutes the player
+    usage: &cIncorrect usage. &f/mute <player> [text]
+    trigger:
+        if arg 1 has permission "admin.bypass":
+            send "&5You can't punish &d%arg 1%&5!"
+        else if arg 1 doesn't have permission "admin.bypass":
+            if arg 2 is set:
+                set {%player%.muted} to true
+                send "&5You have been muted by &d%player% &5due to &d%arg 2%&5!" to arg 1
+                send "&5Succesfully muted &d%arg 1% &5due to &d%arg 2%&5."
+                if @broadcast is true:
+                    broadcast "&d%arg 1% &5has been muted by &d%player% &5due to &d%arg 2%&5!"
+            else if arg 2 is not set:
+                set {%player%.muted} to true
+                send "&5You have been muted by &d%player%&5!" to arg 1
+                send "&5Succesfully muted &d%arg 1%&5."
+                if @broadcast is true:
+                    broadcast "&d%arg 1% &5has been muted by &d%player%&5!"
+
+command /unmute <player> [<text]:
+    permission: admin.unmute
+    permission message: @perm
+    description: Unmutes the player
+    usage: &cIncorrect usage. &f/unmute <player> [text]
+    trigger:
+        if {%arg 1%.muted} isn't true:
+            send "&d%arg 1% is not muted!"
+        else if {%arg 1%.muted} is true:
+            if arg 2 is set:
+                set {%player%.muted} to false
+                send "&5You have been unmuted by &d%player% &5due to &d%arg 2%&5!" to arg 1
+                send "&5Succesfully unmuted &d%arg 1% &5due to &d%arg 2%&5."
+                #if @broadcast is true:
+                    #broadcast "&d%arg 1% &5has been unmuted by &d%player% &5due to &d%arg 2%&5!"
+            else if arg 2 is not set:
+                set {%player%.muted} to true
+                send "&5You have been unmuted by &d%player%&5!" to arg 1
+                send "&5Succesfully unmuted &d%arg 1%&5."
+                #if @broadcast is true:
+                    #broadcast "&d%arg 1% &5has been muted by &d%player%&5!"
+
+on chat:
+    if {%player%.muted} is true:
+        cancel event
+        send "&5You're muted, you can't talk!"
+
+command /ban <player> [<text>]:
+    permission: admin.ban
+    permission message: @perm
+    description: Bans the player
+    usage: &cIncorrect usage. &f/ban <player> [text]
+    trigger:
+        if arg 1 has permission "admin.bypass":
+            send "&5You can't punish &d%arg 1%&5!"
+        else if arg 1 doesn't have permission "admin.bypass":
+            if arg 2 is set:
+                set {%arg 1%.banned} to true
+                send "&5Succesfully banned &d%arg 1% &5due to &d%arg 2%&5."
+                if @broadcast is true:
+                    broadcast "&d%arg 1% &5has been banned by &d%player% &5due to &d%arg 2%&5!"
+                send "&5You've been banned from our server due to &d%arg 2%&5!"
+                wait 3 ticks
+                kick arg 1 due to "You've been banned from our server due to %arg 2%!"
+            else if arg 2 is not set:
+                set {%arg 1%.banned} to true
+                send "&5Succesfully banned &d%arg 1%&5."
+                if @broadcast is true:
+                    broadcast "&d%arg 1% &5has been banned by &d%player%&5!"
+                send "&5You've been banned from our server!"
+                wait 3 ticks
+                kick arg 1 due to "You've been banned from our server!"
+
+command /unban <player> [<text>]:
+    permission: admin.unban
+    permission message: @perm
+    description: Unbans the player
+    usage: &cIncorrect usage. &f/unban <player> [text]
+    trigger:
+        if {%arg 1%.banned} is not true:
+            send "&d%arg 1%&5 isn't banned!"
+        else if arg 1 doesn't have permission "admin.bypass":
+            if arg 2 is set:
+                set {%arg 1%.banned} to false
+                send "&5Succesfully unbanned &d%arg 1% &5due to &d%arg 2%&5."
+                #if @broadcast is true:
+                    #broadcast "&d%arg 1% &5has been unbanned by &d%player% &5due to &d%arg 2%&5!"
+            else if arg 2 is not set:
+                set {%arg 1%.banned} to false
+                send "&5Succesfully unbanned &d%arg 1%&5."
+                #if @broadcast is true:
+                    #broadcast "&d%arg 1% &5has been unbanned by &d%player%&5!"
+
+on join:
+    if {%player%.banned} is true:
+        kick arg 1 due to "You've been banned from this server!"
