@@ -24,7 +24,7 @@ aliases: /spectator, sp
 
 /unban <player> [reason] - admin.unban - unbans the player (reason not required)
 
-##### Please note that banning is not really banning with this skript - the player will be kicked immediately after joining.
+### Please note that banning is not really banning with this skript - the player will be kicked immediately after joining.
 
 /admin - admin.main - main command
 
