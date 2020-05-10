@@ -1,8 +1,10 @@
 # Admin.sk
 #### Created by inqredible
 
-Command list: commands.md
+Command list: [commands.md](https://github.com/mauritsf15/Skript/blob/master/admin/commands.md)
+
 Download: coming soon
+
 Version: 1.0
 
 Servers:
